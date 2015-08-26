@@ -17,7 +17,7 @@ module Shortener
   #  :alphanum     - a-z0-9     -  has about 60 million possible combos
   #  :alphanumcase - a-zA-Z0-9  -  has about 900 million possible combos
   mattr_accessor :charset
-  self.charset = :alphanum
+  self.charset = :alphanumcase
 
   def self.key_chars
     CHARSETS[charset]

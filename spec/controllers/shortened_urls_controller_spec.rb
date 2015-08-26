@@ -37,4 +37,28 @@ describe Shortener::ShortenedUrlsController do
     let(:code) { "-" }
     it_should_behave_like "wrong code"
   end
+
+  context "case insensitive unique keys" do
+    let(:test_url_1) { Shortener::ShortenedUrl.generate("www.bubl.com") }
+    let(:test_url_2) { Shortener::ShortenedUrl.generate("www.bublcam.com") }
+
+    it "works with lower case" do
+      test_url_1.unique_key = "QAZWS"
+      test_url_1.save
+      test_url_2.unique_key = "qazws"
+      test_url_2.save
+      get :show, id: 'QAZWS'
+      response.should redirect_to("http://www.bubl.com/")
+    end
+
+    it "works with upper case" do
+      test_url_1.unique_key = "QAZWS"
+      test_url_1.save
+      test_url_2.unique_key = "qazws"
+      test_url_2.save
+      get :show, id: 'qazws'
+      response.should redirect_to("http://www.bublcam.com/")
+    end
+
+  end
 end
